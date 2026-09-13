@@ -133,3 +133,19 @@ td:nth-child(2){color:var(--ember-text)}
   .hero{min-height:78vh}
   .foot__links{text-align:left}
 }
+
+/* lightbox */
+img.zoom{cursor:zoom-in}
+.lb{position:fixed;inset:0;z-index:100;background:rgba(8,8,9,.96);display:flex;align-items:center;
+  justify-content:center;padding:3vh 3vw;backdrop-filter:blur(6px)}
+.lb[hidden]{display:none}
+.lb__fig{max-width:94vw;max-height:94vh;display:flex;flex-direction:column;gap:14px;align-items:center}
+.lb__fig img{max-width:94vw;max-height:84vh;width:auto;height:auto;border:1px solid rgba(167,175,169,.25);
+  box-shadow:0 30px 80px rgba(0,0,0,.6)}
+.lb__fig figcaption{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--sage);text-align:center;max-width:70ch}
+.lb__fig figcaption b{color:var(--bone);font-weight:500}
+.lb__fig figcaption span{display:block;margin-top:4px;color:var(--sage);text-transform:none;letter-spacing:.02em}
+.lb__close{position:fixed;top:18px;right:22px;background:none;border:1px solid rgba(167,175,169,.45);
+  color:var(--bone);width:42px;height:42px;font-size:16px;cursor:pointer;line-height:1}
+.lb__close:hover{border-color:var(--ember-text);color:var(--ember-text)}
