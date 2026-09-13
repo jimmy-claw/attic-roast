@@ -7,22 +7,23 @@
 @font-face{font-family:'IBM Plex Mono';src:url('../assets/fonts/IBMPlexMono-Medium.ttf') format('truetype');font-weight:500}
 @font-face{font-family:'IBM Plex Mono';src:url('../assets/fonts/IBMPlexMono-SemiBold.ttf') format('truetype');font-weight:600}
 
-:root{--ink:#0C0C0D;--ink2:#151517;--bone:#F4F3EC;--sage:#A7AFA9;--ember:#E2542B;--violet:#6E3BF5}
+:root{--ink:#0C0C0D;--ink2:#151517;--bone:#F4F3EC;--sage:#A7AFA9;--ember:#E2542B;--ember-text:#F4794E;--violet:#6E3BF5}
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{background:var(--ink);-webkit-font-smoothing:antialiased}
 .mono{font-family:'IBM Plex Mono',monospace}
-.tiny{font-family:'IBM Plex Mono',monospace;font-size:5.5pt;letter-spacing:.11em;color:var(--sage);text-transform:uppercase}
+.tiny{font-family:'IBM Plex Mono',monospace;font-size:5.2pt;letter-spacing:.09em;color:var(--sage);text-transform:uppercase}
 .tiny--bone{color:var(--bone)}
 .ember{color:var(--ember)}
-.rule{height:.35mm;background:var(--ember);opacity:.4;margin:2.6mm 0}
+.rule{height:.35mm;background:var(--accent,var(--ember));opacity:.4;margin:2.6mm 0}
 .rule--full{opacity:1}
+.accent{color:var(--accent,var(--ember))}
 .display{font-family:'Anton',sans-serif;text-transform:uppercase;line-height:.90;letter-spacing:.005em}
 
 /* ---------- 70 x 100 mm bag label ---------- */
-.label{width:70mm;height:100mm;background:var(--ink);color:var(--bone);
+.label{--accent:var(--ember);--accent-text:#F4794E;width:70mm;height:100mm;background:var(--ink);color:var(--bone);
   padding:6.5mm;position:relative;overflow:hidden;display:flex;flex-direction:column}
 .label>*{flex-shrink:0}
-.row{display:flex;justify-content:space-between;align-items:baseline;gap:3mm}
+.row{display:flex;justify-content:space-between;align-items:baseline;gap:2mm;flex-wrap:wrap}
 .big{font-size:40pt}
 .name{font-size:38pt}
 .spacer{flex:1 1 auto;min-height:0}
