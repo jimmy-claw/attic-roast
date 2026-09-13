@@ -55,5 +55,22 @@ html,body{background:var(--ink);-webkit-font-smoothing:antialiased}
   font-family:'IBM Plex Mono',monospace;font-size:6.5pt;color:#6B716C;letter-spacing:.08em}
 .sheet__note{position:absolute;left:15mm;right:15mm;bottom:11mm;text-align:center;
   font-family:'IBM Plex Mono',monospace;font-size:6.5pt;color:#6B716C;letter-spacing:.08em}
-.cell{position:absolute;width:70mm;height:100mm;background:#0C0C0D}
+.cell{position:absolute;background:#0C0C0D}
+.bleed{position:absolute;background:#0C0C0D}
 .cr{position:absolute;background:#0C0C0D;display:block}
+
+
+/* ---------- 157.16 x 130 mm bag label (matches Fifty Beans' label size) ---------- */
+.wide{width:157.16mm;height:130mm;background:var(--ink);color:var(--bone);
+  padding:9mm;position:relative;overflow:hidden;display:flex;flex-direction:column;
+  --accent:var(--ember);--accent-text:#F4794E}
+.wide__main{display:flex;gap:11mm;align-items:stretch;margin-top:4mm}
+.wide__left{flex:1 1 auto;min-width:0}
+.wide__right{flex:0 0 46mm;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;border-left:.35mm solid rgba(167,175,169,.35);padding-left:8mm}
+.wide__right .emblem{width:40mm;height:40mm}
+.wide__name{font-size:46pt;line-height:.95}
+.wide__footer{margin-top:auto}
+.wide__facts{display:flex;gap:12mm;flex-wrap:wrap;margin-top:5mm}
+.wide__fact{display:flex;flex-direction:column;gap:1.2mm;max-width:56mm}
+.wide__fact b{font-family:'IBM Plex Mono',monospace;font-size:6pt;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-text)}
+.wide__fact span{font-family:'IBM Plex Mono',monospace;font-size:6.6pt;line-height:1.5;color:var(--sage);text-transform:uppercase;letter-spacing:.04em}
