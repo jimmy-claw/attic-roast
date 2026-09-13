@@ -62,7 +62,7 @@ html,body{background:var(--ink);-webkit-font-smoothing:antialiased}
 
 /* ---------- 157.16 x 130 mm bag label (matches Fifty Beans' label size) ---------- */
 .wide{width:157.16mm;height:130mm;background:var(--ink);color:var(--bone);
-  padding:9mm;position:relative;overflow:hidden;display:flex;flex-direction:column;
+  padding:9mm;position:relative;display:flex;flex-direction:column;
   --accent:var(--ember);--accent-text:#F4794E}
 .wide__main{display:flex;gap:11mm;align-items:stretch;margin-top:4mm}
 .wide__left{flex:1 1 auto;min-width:0}
@@ -74,3 +74,15 @@ html,body{background:var(--ink);-webkit-font-smoothing:antialiased}
 .wide__fact{display:flex;flex-direction:column;gap:1.2mm;max-width:56mm}
 .wide__fact b{font-family:'IBM Plex Mono',monospace;font-size:6pt;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-text)}
 .wide__fact span{font-family:'IBM Plex Mono',monospace;font-size:6.6pt;line-height:1.5;color:var(--sage);text-transform:uppercase;letter-spacing:.04em}
+
+/* official Logos lambda */
+.lambda{display:block;height:38mm;width:auto}
+.lambda--sm{height:12mm}
+.lambda--card{height:22mm}
+.lambda--sleeve{height:15mm}
+.emblem--sm{width:13mm;height:13mm}
+
+/* ink overhang: Chromium rounds the page to whole points, gs then widens the box by
+   ~0.2mm — without this the extra strip rasterises white. Content stays at trim size. */
+.wide::before{content:"";position:absolute;left:-5mm;top:-5mm;right:-5mm;bottom:-5mm;background:var(--ink);z-index:0}
+.wide > *{position:relative;z-index:1}
