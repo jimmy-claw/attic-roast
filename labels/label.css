@@ -33,7 +33,7 @@ html,body{background:var(--ink);-webkit-font-smoothing:antialiased}
 /* ---------- 50 mm round sticker ---------- */
 .sticker{width:50mm;height:50mm;border-radius:50%;background:var(--ink);color:var(--bone);
   display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;overflow:hidden}
-.sticker .emblem{width:15mm;height:15mm}
+.sticker .emblem{width:18mm;height:auto}
 
 /* ---------- A5 table card ---------- */
 .card{width:148mm;height:210mm;background:var(--ink);color:var(--bone);position:relative;overflow:hidden}
@@ -46,7 +46,7 @@ html,body{background:var(--ink);-webkit-font-smoothing:antialiased}
   display:flex;flex-direction:column;justify-content:space-between;overflow:hidden}
 .sleeve__rule{height:.5mm;background:var(--ember)}
 .sleeve__in{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2.6mm;padding:0 26mm}
-.sleeve__in .emblem{width:15mm;height:15mm}
+.sleeve__in .emblem{width:22mm;height:auto}
 .sleeve__txt{display:flex;flex-direction:column;align-items:center;text-align:center}
 
 /* ---------- A4 label sheet (print at home) ---------- */
@@ -80,7 +80,7 @@ html,body{background:var(--ink);-webkit-font-smoothing:antialiased}
 .lambda--sm{height:12mm}
 .lambda--card{height:22mm}
 .lambda--sleeve{height:15mm}
-.emblem--sm{width:13mm;height:13mm}
+.emblem--sm{width:15mm;height:15mm}
 
 /* ink overhang: Chromium rounds the page to whole points, gs then widens the box by
    ~0.2mm — without this the extra strip rasterises white. Content stays at trim size. */
@@ -88,6 +88,6 @@ html,body{background:var(--ink);-webkit-font-smoothing:antialiased}
 .wide > *{position:relative;z-index:1}
 
 /* Logos Attic Coffee mark = cup with a lambda handle */
-.wide__right .emblem{width:44mm;height:44mm}
-.emblem--card{width:26mm;height:26mm}
-.emblem--sleeve{width:17mm;height:17mm}
+.wide__right .emblem{width:40mm;height:40mm}
+.emblem--card{width:30mm;height:30mm}
+.emblem--sleeve{width:20mm;height:20mm}
