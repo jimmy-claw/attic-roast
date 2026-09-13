@@ -39,3 +39,20 @@ html,body{background:var(--ink);-webkit-font-smoothing:antialiased}
 .card .bg{position:absolute;inset:0;object-fit:cover;width:100%;height:100%;opacity:.42;filter:saturate(.55) contrast(1.05)}
 .card .veil{position:absolute;inset:0;background:linear-gradient(180deg,rgba(12,12,13,.72) 0%,rgba(12,12,13,.90) 45%,#0C0C0D 100%)}
 .card .in{position:absolute;inset:0;padding:16mm;display:flex;flex-direction:column}
+
+/* ---------- 230 x 55 mm cup sleeve wrap ---------- */
+.sleeve{width:230mm;height:55mm;background:var(--ink);color:var(--bone);
+  display:flex;flex-direction:column;justify-content:space-between;overflow:hidden}
+.sleeve__rule{height:.5mm;background:var(--ember)}
+.sleeve__in{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2.6mm;padding:0 26mm}
+.sleeve__in .emblem{width:15mm;height:15mm}
+.sleeve__txt{display:flex;flex-direction:column;align-items:center;text-align:center}
+
+/* ---------- A4 label sheet (print at home) ---------- */
+.sheet{width:210mm;height:297mm;background:#F4F3EC;position:relative;overflow:hidden}
+.sheet__head{position:absolute;left:15mm;right:15mm;top:8mm;display:flex;justify-content:space-between;
+  font-family:'IBM Plex Mono',monospace;font-size:6.5pt;color:#6B716C;letter-spacing:.08em}
+.sheet__note{position:absolute;left:15mm;right:15mm;bottom:11mm;text-align:center;
+  font-family:'IBM Plex Mono',monospace;font-size:6.5pt;color:#6B716C;letter-spacing:.08em}
+.cell{position:absolute;width:70mm;height:100mm;background:#0C0C0D}
+.cr{position:absolute;background:#0C0C0D;display:block}
