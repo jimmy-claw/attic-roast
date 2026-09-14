@@ -70,10 +70,10 @@ html,body{background:var(--ink);-webkit-font-smoothing:antialiased}
 .wide__right .emblem{width:42mm;height:42mm}
 .wide__name{font-size:46pt;line-height:.95}
 .wide__footer{margin-top:auto}
-.wide__facts{display:flex;gap:12mm;flex-wrap:wrap;margin-top:5mm}
-.wide__fact{display:flex;flex-direction:column;gap:1.2mm;max-width:56mm}
-.wide__fact b{font-family:'IBM Plex Mono',monospace;font-size:6pt;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-text)}
-.wide__fact span{font-family:'IBM Plex Mono',monospace;font-size:6.6pt;line-height:1.5;color:var(--sage);text-transform:uppercase;letter-spacing:.04em}
+.wide__facts{display:flex;flex-direction:column;gap:1.5mm;margin-top:5mm}
+.wide__fact{display:flex;flex-direction:row;align-items:baseline;gap:3mm;max-width:none}
+.wide__fact b{flex:0 0 27mm;font-family:'IBM Plex Mono',monospace;font-size:6pt;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-text)}
+.wide__fact span{flex:1 1 auto;font-family:'IBM Plex Mono',monospace;font-size:6.2pt;line-height:1.45;color:var(--sage);text-transform:uppercase;letter-spacing:.04em}
 
 /* official Logos lambda */
 .lambda{display:block;height:38mm;width:auto}
