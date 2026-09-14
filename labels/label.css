@@ -67,7 +67,7 @@ html,body{background:var(--ink);-webkit-font-smoothing:antialiased}
 .wide__main{display:flex;gap:11mm;align-items:stretch;margin-top:4mm}
 .wide__left{flex:1 1 auto;min-width:0}
 .wide__right{flex:0 0 46mm;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;border-left:.35mm solid rgba(167,175,169,.35);padding-left:8mm}
-.wide__right .emblem{width:40mm;height:40mm}
+.wide__right .emblem{width:42mm;height:42mm}
 .wide__name{font-size:46pt;line-height:.95}
 .wide__footer{margin-top:auto}
 .wide__facts{display:flex;gap:12mm;flex-wrap:wrap;margin-top:5mm}
@@ -88,6 +88,6 @@ html,body{background:var(--ink);-webkit-font-smoothing:antialiased}
 .wide > *{position:relative;z-index:1}
 
 /* Logos Attic Coffee mark = cup with a lambda handle */
-.wide__right .emblem{width:40mm;height:40mm}
+.wide__right .emblem{width:42mm;height:42mm}
 .emblem--card{width:30mm;height:30mm}
 .emblem--sleeve{width:20mm;height:20mm}
