@@ -149,3 +149,11 @@ img.zoom{cursor:zoom-in}
 .lb__close{position:fixed;top:18px;right:22px;background:none;border:1px solid rgba(167,175,169,.45);
   color:var(--bone);width:42px;height:42px;font-size:16px;cursor:pointer;line-height:1}
 .lb__close:hover{border-color:var(--ember-text);color:var(--ember-text)}
+
+/* tables can be wider than a small phone — scroll them, never the page */
+.tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0 -4px;padding:0 4px}
+.tablewrap table{min-width:520px}
+@media (max-width:620px){
+  .tablewrap table{min-width:460px;font-size:11.5px}
+  .tablewrap td{padding:8px 10px 8px 0}
+}
