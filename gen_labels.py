@@ -109,13 +109,23 @@ KICKER = "Attic&nbsp;Roast&nbsp;×&nbsp;Dark&nbsp;Prague&nbsp;2026"
 KICKER_SHORT = "Attic&nbsp;Roast&nbsp;×&nbsp;Dark&nbsp;Prague"
 
 BAND_COLOURS = ["#F7B32B","#F2643C","#E8508D","#7C5CFF","#2FB3C9"]
-# Geometry is inline and display comes from CSS. The band kept losing to layout rules
-# that targeted descendants (.wide > *, body.pg > *) and to flex shrinking; pinning the
-# position/size inline leaves exactly one thing for a theme to decide: whether it shows.
+# Fully self-contained: every dimension inline, no class, no cascade. Three attempts to
+# style this from CSS failed because .wide > * and body.pg > * (and flex shrinking) kept
+# winning, and the failure was invisible in the markup — the element was always present.
+# The theme now decides in Python whether the band exists at all.
 def bands_html(h="6mm"):
-    return ('<div class="bands" style="position:absolute;left:0;right:0;bottom:0;'
-            f'height:{h};z-index:9">'
-            + "".join(f'<i style="background:{c}"></i>' for c in BAND_COLOURS) + "</div>")
+    cells = "".join(
+        f'<i style="flex:1 1 0;display:block;height:100%;background:{c}"></i>' for c in BAND_COLOURS)
+    # left:0 + an explicit width, NOT left:0;right:0. With left+right the box came out
+    # 100 mm wide on a 157 mm label (the stripes were equal fifths of a shrink-to-fit
+    # box), so the horizon stopped two-thirds of the way across. An explicit 100% of the
+    # padding box cannot be shrink-to-fit and covers the label edge to edge.
+    # position:fixed, not absolute. Absolute resolved against whatever ancestor Chrome
+    # picked (the stripes came out 100 mm wide on a 157 mm label and the horizon stopped
+    # two-thirds across, no matter whether I used left+right or an explicit width). Fixed
+    # resolves against the page, which is what a full-bleed horizon actually wants.
+    return ('<div style="display:flex;position:fixed;left:0;width:100%;bottom:0;'
+            f'height:{h};z-index:9">{cells}</div>')
 
 STORY = ("Private by default is not a setting, it is a place to stand: "
          "communities that run on their own ground instead of someone else's. "
@@ -233,7 +243,8 @@ CARD = '''<body class="pg">
 <div class="card">
   <img class="bg" src="../assets/img/hero-plant.jpg" alt="">
   <div class="veil"></div>
-  <div class="in">
+  {bands}
+<div class="in">
     <div class="row">
       <span class="tiny tiny--bone">''' + KICKER + '''</span>
       <span class="tiny">Old&nbsp;Wastewater&nbsp;Plant&nbsp;·&nbsp;Prague</span>
@@ -328,7 +339,7 @@ def mark_for(v, theme, stroke, cls="emblem"):
 
 def wide_inner(v, theme="dark"):
     a, at = pick(v, theme)
-    return WIDE_INNER.format(emblem=mark_for(v, theme, 9), size=v["wide_size"], pun=v["pun"], bands=bands_html(),
+    return WIDE_INNER.format(emblem=mark_for(v, theme, 9), size=v["wide_size"], pun=v["pun"], bands=bands_html() if theme == "sunrise" else "",
                              accent=a, accent_text=at,
                              process=v["process"], notes=v["notes"], lot=v["lot"], origin=v["origin"])
 
@@ -338,7 +349,7 @@ def wide_label_html(v, theme="dark"):
 
 def label_inner(v, theme="dark"):
     a, at = pick(v, theme)
-    return LABEL_INNER.format(emblem=mark_for(v, theme, 10), size=v["size"], pun=v["pun"], bands=bands_html("4mm"),
+    return LABEL_INNER.format(emblem=mark_for(v, theme, 10), size=v["size"], pun=v["pun"], bands=bands_html("4mm") if theme == "sunrise" else "",
                               accent=a, accent_text=at,
                               process=v["process"], notes=v["notes"], lot=v["lot"],
                               origin=v["origin"])
@@ -349,11 +360,11 @@ def label_html(v, theme="dark"):
 
 def back_inner(theme="dark"):
     m = emblem("#1A140C", 12, bar="#D9411C") if theme == "sunrise" else emblem("#E2542B", 12)
-    return BACK_INNER.replace("{emblem_sm}", m).replace("{bands_sm}", bands_html())
+    return BACK_INNER.replace("{emblem_sm}", m).replace("{bands_sm}", bands_html() if theme == "sunrise" else "")
 
 def wide_back_inner(theme="dark"):
     m = emblem("#1A140C", 8, bar="#D9411C") if theme == "sunrise" else emblem("#E2542B", 8)
-    return WIDE_BACK_INNER.replace("{emblem_lg}", m).replace("{bands_sm}", bands_html())
+    return WIDE_BACK_INNER.replace("{emblem_lg}", m).replace("{bands_sm}", bands_html() if theme == "sunrise" else "")
 
 def sheet_html(contents=None, note="", theme="dark"):
     """A4 sheet holding two 157.16 x 130 mm labels, stacked, with crop marks."""
@@ -391,8 +402,8 @@ def main(theme="dark"):
         open(os.path.join(OUT,f"{v['slug']}.html"),"w").write(wide_label_html(v, theme)); n+=1
         open(os.path.join(OUT,f"{v['slug']}-small.html"),"w").write(label_html(v, theme)); n+=1
     open(os.path.join(OUT,"back.html"),"w").write(head("back",157.16,130,bg=bg,theme=theme)+'<body class="pg">\n'+back_inner(theme)+"\n</body></html>"); n+=1
-    open(os.path.join(OUT,"sticker.html"),"w").write(head("sticker",50,50,bg=bg,theme=theme)+STICKER.format(bands_sm=bands_html("4mm"), emblem=mark_for(VARIANTS[0], theme, 11, "emblem emblem--sm"))); n+=1
-    open(os.path.join(OUT,"table-card.html"),"w").write(head("card",148,210,bg=bg,theme=theme)+CARD.format(emblem=mark_for(VARIANTS[0], theme, 10, "emblem emblem--card"))); n+=1
+    open(os.path.join(OUT,"sticker.html"),"w").write(head("sticker",50,50,bg=bg,theme=theme)+STICKER.format(bands_sm=(bands_html("4mm") if theme == "sunrise" else ""), emblem=mark_for(VARIANTS[0], theme, 11, "emblem emblem--sm"))); n+=1
+    open(os.path.join(OUT,"table-card.html"),"w").write(head("card",148,210,bg=bg,theme=theme)+CARD.format(bands=(bands_html() if theme == "sunrise" else ""), emblem=mark_for(VARIANTS[0], theme, 10, "emblem emblem--card"))); n+=1
     open(os.path.join(OUT,"cup-sleeve.html"),"w").write(head("sleeve",230,55,bg=bg,theme=theme)+SLEEVE.format(emblem=mark_for(VARIANTS[0], theme, 11, "emblem emblem--sleeve"))); n+=1
     open(os.path.join(OUT,"sheet-a4-1.html"),"w").write(head("sheet1",210,297,bg=THEMES[theme]["sheet_bg"],theme=theme)+sheet_html([wide_inner(VARIANTS[0],theme),wide_inner(VARIANTS[1],theme)],"Disco Parallel &middot; Private Fizz",theme)); n+=1
     open(os.path.join(OUT,"sheet-a4-2.html"),"w").write(head("sheet2",210,297,bg=THEMES[theme]["sheet_bg"],theme=theme)+sheet_html([wide_inner(VARIANTS[2],theme),wide_back_inner(theme)],"Do Not Crumble &middot; back",theme)); n+=1

@@ -150,6 +150,51 @@ import sys; sys.exit(1 if bad else 0)
 PYCHECK
 
 echo
+echo "== verification: the horizon band is on every sunrise piece, absent from every dark one =="
+python3 - <<'PYCHECK'
+# Read the LAST FEW ROWS of each rendered piece, take the longest run of each stripe
+# colour across those rows, and require it to be a sensible fraction of the width.
+#
+# Two earlier versions of this check were wrong, in opposite directions, and both cost
+# real time: counting colour presence ANYWHERE reported a false leak on dark proof-of-pop
+# (its grape accent is close to the violet stripe), and reading only the bottom two rows
+# missed pieces where the band's last millimetre is cropped. Reading a few rows and
+# requiring actual runs has neither failure mode.
+from PIL import Image
+import sys, os
+STRIPES=[("sun",(247,179,43)),("coral",(242,100,60)),("magenta",(232,80,141)),
+         ("violet",(124,92,255)),("aqua",(47,179,201))]
+PIECES=["disco-parallel","private-fizz","proof-of-pop","do-not-crumble","back","sticker",
+        "disco-parallel-small","private-fizz-small","proof-of-pop-small","do-not-crumble-small",
+        "cup-sleeve","table-card"]
+def longest(path):
+    im=Image.open(path).convert("RGB"); w,h=im.size
+    best={}
+    for y in range(h-1,max(h-8,0),-1):
+        prev=None; run=0
+        for x in range(w):
+            p=im.getpixel((x,y)); hit=None
+            for name,t in STRIPES:
+                if sum(abs(a-b) for a,b in zip(p,t))<40: hit=name; break
+            if hit==prev and hit: run+=1
+            else: prev,run=hit,1
+            if hit and run>best.get(hit,0): best[hit]=run
+    return w, best
+bad=[]
+for f in PIECES:
+    for theme, want in (("sunrise",5),("dark",0)):
+        p=f"out/{theme}-{f}.png"
+        if not os.path.exists(p): continue
+        w, best = longest(p)
+        n=len([k for k,v in best.items() if v >= 0.08*w])
+        if n != want: bad.append(f"{theme}/{f} showed {n}")
+if bad:
+    for b in bad: print("   !!"+b)
+    sys.exit(1)
+print(f"   sunrise: all 5 stripes on all {len(PIECES)} pieces")
+print(f"   dark:    no band on all {len(PIECES)} pieces")
+PYCHECK
+
 echo "== verification: no vendor name anywhere in the artwork =="
 if grep -rin "logos\|λ" labels/*.html labels-sunrise/*.html index.html 2>/dev/null; then
   echo "  !! FOUND — fix before printing"; exit 1
