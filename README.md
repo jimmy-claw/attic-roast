@@ -7,6 +7,21 @@ Coffee branding for the **Attic Roast** coffee session at **Dark Prague 2026**
 coffee is named for the room, not for a vendor. Privacy, parallel infrastructure and
 the city carry the design instead. If you are editing this, keep it that way.
 
+## A direction that was rejected
+
+A light, colourful "sunrise" variant was built and shown (cream ground, colour inside the
+mark, a full-bleed band of five parallel stripes along the bottom of every piece). **Václav
+rejected it: "it looks pretty terrible — does not match the existing ones at all."** Fifty
+Beans' own shelf labels are what this sits next to, and matching them matters more than the
+idea. So the deliverable is the dark direction only, and `build.sh` builds only that.
+
+The code path remains (`THEMES` in `gen_labels.py`, `python3 gen_labels.py sunrise`) so it can
+be reproduced rather than re-invented, but nothing in `site/` ships it.
+
+What we learned from the attempt, worth keeping: reading a rendered PNG for pixels is the
+only reliable check — three attempts at verifying that band from the markup all said "fine"
+while it was wrong on the page.
+
 ## Build
 
 ```bash

@@ -410,6 +410,10 @@ def main(theme="dark"):
     print(f"  {theme}: wrote {n} templates to {os.path.basename(OUT)}")
 
 if __name__ == "__main__":
-    which = sys.argv[1:] or list(THEMES)
+    # Dark only by default. The 'sunrise' direction below was built, shown, and rejected:
+    # it does not match Fifty Beans' existing shelf labels. The code path is kept so it can
+    # be reproduced with `gen_labels.py sunrise` rather than re-invented, but it is not
+    # part of the deliverable and build.sh does not generate it.
+    which = sys.argv[1:] or ["dark"]
     for t in which:
         main(t)
