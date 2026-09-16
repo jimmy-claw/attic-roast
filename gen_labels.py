@@ -196,6 +196,11 @@ LABEL_INNER = '''<div class="label" style="--accent:{accent};--accent-text:{acce
   {bands}
 </div>'''
 
+# NOT PRINTED. Fifty Beans' own back label already carries origin, producer, roast and
+# best-before dates, a QR code, the barcode and a full brew recipe, in Czech. A second back
+# label would restate a subset of that in a different voice, so the bag carries OUR FRONT
+# ONLY (Václav, 2026-09-16: "let's go with one label on the front"). This template is kept
+# because it costs nothing and a plain bag may want one day.
 BACK_INNER = '''<div class="back">
   <div>
     <div class="row" style="margin-bottom:5mm">
@@ -395,18 +400,22 @@ def sheet_html(contents=None, note="", theme="dark"):
 
 def main(theme="dark"):
     OUT = os.path.join(ROOT, THEMES[theme]["out"])
+    # wipe stale templates: the back label was dropped from the build, and without
+    # this its .html survives in the repo and keeps getting rendered by hand.
+    if os.path.isdir(OUT):
+        for f in os.listdir(OUT):
+            if f.endswith(".html"): os.remove(os.path.join(OUT, f))
     os.makedirs(OUT, exist_ok=True)
     bg = THEMES[theme]["bg"]
     n=0
     for v in VARIANTS:
         open(os.path.join(OUT,f"{v['slug']}.html"),"w").write(wide_label_html(v, theme)); n+=1
         open(os.path.join(OUT,f"{v['slug']}-small.html"),"w").write(label_html(v, theme)); n+=1
-    open(os.path.join(OUT,"back.html"),"w").write(head("back",157.16,130,bg=bg,theme=theme)+'<body class="pg">\n'+back_inner(theme)+"\n</body></html>"); n+=1
     open(os.path.join(OUT,"sticker.html"),"w").write(head("sticker",50,50,bg=bg,theme=theme)+STICKER.format(bands_sm=(bands_html("4mm") if theme == "sunrise" else ""), emblem=mark_for(VARIANTS[0], theme, 11, "emblem emblem--sm"))); n+=1
     open(os.path.join(OUT,"table-card.html"),"w").write(head("card",148,210,bg=bg,theme=theme)+CARD.format(bands=(bands_html() if theme == "sunrise" else ""), emblem=mark_for(VARIANTS[0], theme, 10, "emblem emblem--card"))); n+=1
     open(os.path.join(OUT,"cup-sleeve.html"),"w").write(head("sleeve",230,55,bg=bg,theme=theme)+SLEEVE.format(emblem=mark_for(VARIANTS[0], theme, 11, "emblem emblem--sleeve"))); n+=1
     open(os.path.join(OUT,"sheet-a4-1.html"),"w").write(head("sheet1",210,297,bg=THEMES[theme]["sheet_bg"],theme=theme)+sheet_html([wide_inner(VARIANTS[0],theme),wide_inner(VARIANTS[1],theme)],"Disco Parallel &middot; Private Fizz",theme)); n+=1
-    open(os.path.join(OUT,"sheet-a4-2.html"),"w").write(head("sheet2",210,297,bg=THEMES[theme]["sheet_bg"],theme=theme)+sheet_html([wide_inner(VARIANTS[2],theme),wide_back_inner(theme)],"Do Not Crumble &middot; back",theme)); n+=1
+    open(os.path.join(OUT,"sheet-a4-2.html"),"w").write(head("sheet2",210,297,bg=THEMES[theme]["sheet_bg"],theme=theme)+sheet_html([wide_inner(VARIANTS[2],theme),wide_inner(VARIANTS[3],theme)],"Proof of Pop &middot; Do Not Crumble",theme)); n+=1
     print(f"  {theme}: wrote {n} templates to {os.path.basename(OUT)}")
 
 if __name__ == "__main__":

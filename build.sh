@@ -19,12 +19,12 @@ DIR="$(cd "$(dirname "$0")" && pwd)"
 cd "$DIR"
 
 # name:template:width_mm:height_mm   (the sizes declared on the site)
+# No back label: Fifty Beans' own back label covers the back of the bag.
 PIECES=(
   "disco-parallel:disco-parallel.html:157.16:130"
   "private-fizz:private-fizz.html:157.16:130"
   "proof-of-pop:proof-of-pop.html:157.16:130"
   "do-not-crumble:do-not-crumble.html:157.16:130"
-  "back:back.html:157.16:130"
   "sticker:sticker.html:50:50"
   "table-card:table-card.html:148:210"
   "cup-sleeve:cup-sleeve.html:230:55"
@@ -77,6 +77,12 @@ python3 - <<'PY'
 import os
 from PIL import Image
 for theme, lab, zoo in [("dark","assets/img/labels","assets/img/zoom")]:
+    # wipe, for the same reason out/ is wiped: a preview for a piece that no longer
+    # exists otherwise survives in the repo and on the site for ever.
+    for d in (lab, zoo):
+        if os.path.isdir(d):
+            for f in os.listdir(d):
+                if f.endswith(".jpg"): os.remove(os.path.join(d, f))
     os.makedirs(lab, exist_ok=True); os.makedirs(zoo, exist_ok=True)
     n=0
     for f in sorted(os.listdir("out")):
