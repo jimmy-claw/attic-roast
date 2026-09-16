@@ -39,9 +39,10 @@ Everything in `site/` is generated. Edit `gen_labels.py` (artwork) or `site/inde
 
 ## The mark
 
-A cup with a **keyhole** stamped on its body — one line, no fills. The stamp is not a
-logo: private-by-default is the point, so the mark says privacy rather than saying a
-name. The cup is drawn by its edge alone (no rim stroke; the silhouette does that work).
+A cup with **two parallel bars** stamped on its body — one line, no fills. Not a logo,
+and not a lock: a keyhole was tried first and read as a padlock. The bars say
+**parallel** — parallel society, parallel infrastructure — with a nod to `//`.
+The cup is drawn by its edge alone (no rim stroke; the silhouette does that work).
 
 ## Colour
 

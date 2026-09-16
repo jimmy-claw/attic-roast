@@ -14,15 +14,19 @@ import os
 OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "labels")
 
 def emblem(color="#E2542B", stroke=10, cls="emblem"):
-    """Attic Roast mark: a cup with a keyhole stamped on its body.
+    """Attic Roast mark: a cup with two parallel bars stamped on its body.
     No rim line on top (it read as a stray stroke); the body edge IS the rim.
-    The stamp is a keyhole, not a logo: private-by-default is the point."""
+    The bars are not a logo and not a lock: they say *parallel* — parallel
+    society, parallel infrastructure — and they echo // for the people in the
+    room. A keyhole was tried first and read as a padlock."""
     return f'''<svg class="{cls}" viewBox="0 0 200 200" fill="none" aria-label="Attic Roast" style="color:{color}">
 <g fill="none" stroke="currentColor" stroke-width="{stroke}" stroke-linecap="round" stroke-linejoin="round">
 <path d="M42 112 H140 L128 164 a14 14 0 0 1 -13 13 H67 a14 14 0 0 1 -13 -13 Z"/>
 <path d="M140 126 a25 25 0 0 1 0 38"/>
 </g>
-<g fill="currentColor"><circle cx="91" cy="139" r="11"/><path d="M85.6 147.5 h10.8 l-3.4 17.5 h-4 z"/></g>
+<g stroke="currentColor" stroke-width="{stroke}" stroke-linecap="round">
+<path d="M68 157 L84 127"/><path d="M98 157 L114 127"/>
+</g>
 </svg>'''
 
 def head(title, wmm, hmm, bg="#0C0C0D", extra=""):
