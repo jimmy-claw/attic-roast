@@ -1,5 +1,5 @@
-/* LOGOS ATTIC COFFEE — label system
-   Palette from Logos (logos.co) + Dark Prague (dark.events):
+/* ATTIC ROAST — label system
+   Palette from Dark Prague (dark.events):
    ink #0C0C0D · bone #F4F3EC · sage #8A928C · ember #E2542B */
 @font-face{font-family:'Anton';src:url('../assets/fonts/Anton-Regular.ttf') format('truetype');font-weight:400}
 @font-face{font-family:'Space Grotesk';src:url('../assets/fonts/SpaceGrotesk.ttf') format('truetype');font-weight:300 700}
@@ -75,7 +75,7 @@ html,body{background:var(--ink);-webkit-font-smoothing:antialiased}
 .wide__fact b{flex:0 0 27mm;font-family:'IBM Plex Mono',monospace;font-size:6pt;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-text)}
 .wide__fact span{flex:1 1 auto;font-family:'IBM Plex Mono',monospace;font-size:6.2pt;line-height:1.45;color:var(--sage);text-transform:uppercase;letter-spacing:.04em}
 
-/* official Logos lambda */
+/* the keyhole stamp on the cup body */
 .lambda{display:block;height:38mm;width:auto}
 .lambda--sm{height:12mm}
 .lambda--card{height:22mm}
@@ -87,7 +87,7 @@ html,body{background:var(--ink);-webkit-font-smoothing:antialiased}
 .wide::before{content:"";position:absolute;left:-5mm;top:-5mm;right:-5mm;bottom:-5mm;background:var(--ink);z-index:0}
 .wide > *{position:relative;z-index:1}
 
-/* Logos Attic Coffee mark = cup with a lambda handle */
+/* Attic Roast mark = cup with a keyhole body */
 .wide__right .emblem{width:42mm;height:42mm}
 .emblem--card{width:30mm;height:30mm}
 .emblem--sleeve{width:20mm;height:20mm}
