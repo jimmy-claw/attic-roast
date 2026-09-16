@@ -86,6 +86,27 @@ if [ -f logos-attic-coffee-print-kit.zip ]; then rm -f logos-attic-coffee-print-
 ls -lh attic-roast-print-kit.zip | awk '{print "  "$9" ("$5")"}'
 
 echo
+echo "== verification: the mark fits the cup at every weight it is used at =="
+python3 - <<'PYCHECK'
+# The bars are stamped inside the cup. That is only safe if they clear the silhouette
+# at the HEAVIEST stroke any piece uses, not just the one being looked at.
+def lx(y): return 42 + (54-42)*(y-112)/(164-112)   # left wall, top -> bottom
+def rx(y): return 140 + (128-140)*(y-112)/(164-112) # right wall
+bars=[((70,158),(86,132)), ((96,158),(112,132))]
+worst=1e9
+for sw in (8,9,10,11,12,14,16):
+    bw=max(5,round(sw*0.8))
+    for (x0,y0),(x1,y1) in bars:
+        worst=min(worst, x0-bw/2-lx(y0)-sw/2, rx(y0)+sw/2-(x1+bw/2),
+                         y1-bw/2-(112+sw/2), (177-sw/2)-(y0+bw/2))
+d=[(x1-x0,y1-y0) for (x0,y0),(x1,y1) in bars]
+par = d[0]==d[1]
+print(f"  worst clearance across stroke widths 8..16: {worst:.1f} px  {'✓' if worst>0 else '!! OVERLAP'}")
+print(f"  bars parallel by construction: {par}  {'✓' if par else '!!'}")
+import sys
+sys.exit(0 if (worst>0 and par) else 1)
+PYCHECK
+
 echo "== verification: no vendor name anywhere in the artwork =="
 if grep -rin "logos\|λ" labels/*.html index.html 2>/dev/null; then
   echo "  !! FOUND — fix before printing"; exit 1

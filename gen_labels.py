@@ -19,13 +19,14 @@ def emblem(color="#E2542B", stroke=10, cls="emblem"):
     The bars are not a logo and not a lock: they say *parallel* — parallel
     society, parallel infrastructure — and they echo // for the people in the
     room. A keyhole was tried first and read as a padlock."""
+    bar = max(5, round(stroke * 0.8))   # lighter than the silhouette, and it fits at every weight
     return f'''<svg class="{cls}" viewBox="0 0 200 200" fill="none" aria-label="Attic Roast" style="color:{color}">
 <g fill="none" stroke="currentColor" stroke-width="{stroke}" stroke-linecap="round" stroke-linejoin="round">
 <path d="M42 112 H140 L128 164 a14 14 0 0 1 -13 13 H67 a14 14 0 0 1 -13 -13 Z"/>
 <path d="M140 126 a25 25 0 0 1 0 38"/>
 </g>
-<g stroke="currentColor" stroke-width="{stroke}" stroke-linecap="round">
-<path d="M68 157 L84 127"/><path d="M98 157 L114 127"/>
+<g stroke="currentColor" stroke-width="{bar}" stroke-linecap="round">
+<path d="M70 158 L86 132"/><path d="M96 158 L112 132"/>
 </g>
 </svg>'''
 
