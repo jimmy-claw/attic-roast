@@ -85,9 +85,26 @@ html,body{background:var(--ink);-webkit-font-smoothing:antialiased}
 /* ink overhang: Chromium rounds the page to whole points, gs then widens the box by
    ~0.2mm — without this the extra strip rasterises white. Content stays at trim size. */
 .wide::before{content:"";position:absolute;left:-5mm;top:-5mm;right:-5mm;bottom:-5mm;background:var(--ink);z-index:0}
-.wide > *{position:relative;z-index:1}
+/* :not(.bands) — the horizon band must stay absolutely positioned and full-bleed,
+   otherwise it becomes a flex child, gets shrunk, and is clipped away. */
+.wide > *:not(.bands){position:relative;z-index:1}
 
 /* Attic Roast mark = cup with a keyhole body */
 .wide__right .emblem{width:42mm;height:42mm}
 .emblem--card{width:30mm;height:30mm}
 .emblem--sleeve{width:20mm;height:20mm}
+
+/* ---------- horizon band ----------
+   A full-bleed strip of parallel stripes, present in every template but hidden in the
+   dark direction. Sunrise switches it on. Five stripes = five spot colours, so it
+   prints as flat colour instead of a gradient. Add .bands--sm for narrow pieces. */
+.bands{display:none}
+.bands i{flex:1 1 0;display:block;height:100%}
+
+/* ---------- 157.16 x 130 mm back label ----------
+   The back was using .label (70 x 100 mm) on a 157.16 x 130 mm page, so it printed
+   small in the corner of an oversized sheet. Own class now. */
+.back{width:157.16mm;height:130mm;background:var(--ink);color:var(--bone);
+  padding:9mm;position:relative;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden}
+.back::before{content:"";position:absolute;left:-5mm;top:-5mm;right:-5mm;bottom:-5mm;background:var(--ink);z-index:0}
+.back > *:not(.bands){position:relative;z-index:1}

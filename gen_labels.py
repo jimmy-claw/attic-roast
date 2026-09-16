@@ -9,33 +9,62 @@ Brand note: this is deliberately NOT branded as any company. The room at Dark
 Prague is the Attic, so the coffee is "Attic Roast" — privacy, parallel
 infrastructure, and the city. No vendor name appears anywhere on the artwork.
 """
-import os
+import os, sys
 
-OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "labels")
+ROOT = os.path.dirname(os.path.abspath(__file__))
 
-def emblem(color="#E2542B", stroke=10, cls="emblem"):
+# Two directions. "dark" is the Dark Prague room; "sunrise" is the same design seen in
+# daylight — outdoors, colourful, funky. The layout is identical: only the ground, the
+# accents and the treatment of a full-width rule change, because a full-width rule in
+# sunrise becomes a band of parallel stripes (the horizon — and, literally, parallel).
+SUNRISE_CSS = """
+:root{--ink:#FBF3E4;--ink2:#F3E8D4;--bone:#1A140C;--sage:#8A7660}
+html,body{background:#FBF3E4}
+.rule--full{background:none;height:1.8mm;opacity:1;
+  background-image:linear-gradient(90deg,
+    #F7B32B 0 20%,#F2643C 20% 40%,#E8508D 40% 60%,#7C5CFF 60% 80%,#2FB3C9 80% 100%)}
+.sleeve__rule{height:2.2mm;
+  background-image:linear-gradient(90deg,
+    #F7B32B 0 20%,#F2643C 20% 40%,#E8508D 40% 60%,#7C5CFF 60% 80%,#2FB3C9 80% 100%)}
+.bands{display:flex;position:absolute;left:0;right:0;bottom:0;height:6mm;z-index:9;flex:none}
+.bands--sm{height:4mm}
+.sheet{background:#F2E7D3}
+.cell,.bleed{background:#FBF3E4}
+.cr{background:#6B716C}
+.card .bg{opacity:.70;filter:saturate(1.2) brightness(1.08)}
+.card .veil{background:linear-gradient(180deg,rgba(251,243,228,.50) 0%,rgba(251,243,228,.86) 45%,#FBF3E4 100%)}
+"""
+
+THEMES = {
+ "dark": dict(out="labels", bg="#0C0C0D", sheet_bg="#F4F3EC", css=""),
+ "sunrise": dict(out="labels-sunrise", bg="#FBF3E4", sheet_bg="#F2E7D3", css=SUNRISE_CSS),
+}
+
+def emblem(color="#E2542B", stroke=10, cls="emblem", bar=None):
     """Attic Roast mark: a cup with two parallel bars stamped on its body.
     No rim line on top (it read as a stray stroke); the body edge IS the rim.
     The bars are not a logo and not a lock: they say *parallel* — parallel
     society, parallel infrastructure — and they echo // for the people in the
     room. A keyhole was tried first and read as a padlock."""
-    bar = max(5, round(stroke * 0.8))   # lighter than the silhouette, and it fits at every weight
+    barw = max(5, round(stroke * 0.8))  # lighter than the silhouette, and it fits at every weight
+    barc = bar or "currentColor"
     return f'''<svg class="{cls}" viewBox="0 0 200 200" fill="none" aria-label="Attic Roast" style="color:{color}">
 <g fill="none" stroke="currentColor" stroke-width="{stroke}" stroke-linecap="round" stroke-linejoin="round">
 <path d="M42 112 H140 L128 164 a14 14 0 0 1 -13 13 H67 a14 14 0 0 1 -13 -13 Z"/>
 <path d="M140 126 a25 25 0 0 1 0 38"/>
 </g>
-<g stroke="currentColor" stroke-width="{bar}" stroke-linecap="round">
+<g stroke="{barc}" stroke-width="{barw}" stroke-linecap="round">
 <path d="M70 158 L86 132"/><path d="M96 158 L112 132"/>
 </g>
 </svg>'''
 
-def head(title, wmm, hmm, bg="#0C0C0D", extra=""):
+def head(title, wmm, hmm, bg="#0C0C0D", extra="", theme="dark"):
     # Chromium rounds @page sizes to whole POINTS (157.16mm -> 156.97mm), so we render on a
     # page 1.5mm larger, anchor the piece to the BOTTOM-LEFT, and let ghostscript crop the
     # extra (gs -dFIXEDMEDIA keeps the bottom-left of the larger page). Result: exact trim,
     # no white hairline at the edge.
     wpt, hpt = round((wmm+1.5)/25.4*72, 3), round((hmm+1.5)/25.4*72, 3)
+    theme_css = f'<style>{THEMES[theme]["css"]}</style>' if THEMES[theme]["css"] else ''
     return f'''<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><title>{title}</title>
 <style>
@@ -44,32 +73,32 @@ html,body{{margin:0;padding:0}}
 body.pg{{position:relative;width:{wmm+1.5}mm;height:{hmm+1.5}mm;background:{bg};overflow:hidden}}
 body.pg > *{{position:absolute;left:0;bottom:0}}
 </style>
-<link rel="stylesheet" href="label.css">{extra}</head>
+<link rel="stylesheet" href="label.css">{theme_css}{extra}</head>
 '''
 
 # ── the special coffees (Fifty Beans, Brno) ───────────────────────────────────
 # All four: Edinson Argote, Colombia · enzymatic fermentation · espresso & filter · 499 Kč
 VARIANTS = [
  dict(slug="disco-parallel", wide_size="40pt", pun="Disco<br>Parallel", size="36pt",
-      accent="#E2542B", accent_text="#F4794E",
+      accent="#E2542B", accent_text="#F4794E", s_accent="#D9411C", s_text="#A83210",
       process="Enzymatic fermentation",
       notes="Blackberry candy · Cherries · Herbs",
       lot="Disco Candy",
       origin="Ombligon · Edinson Argote, Colombia"),
  dict(slug="private-fizz", wide_size="40pt", pun="Private<br>Fizz", size="40pt",
-      accent="#E85D9E", accent_text="#F58BB6",
+      accent="#E85D9E", accent_text="#F58BB6", s_accent="#C42A7C", s_text="#961D5E",
       process="Enzymatic fermentation",
       notes="Rose water · Raspberry soda · Florals",
       lot="Rose Fizz",
       origin="Typica Mejorado · Edinson Argote, Colombia"),
  dict(slug="proof-of-pop", wide_size="40pt", pun="Proof<br>of Pop", size="38pt",
-      accent="#8B5CF6", accent_text="#A98BFF",
+      accent="#8B5CF6", accent_text="#A98BFF", s_accent="#5B3ACF", s_text="#4429A6",
       process="Enzymatic fermentation",
       notes="Raspberry cake · Stone fruit",
       lot="Crazy Pop",
       origin="Caturra Chiroso · Edinson Argote, Colombia"),
  dict(slug="do-not-crumble", wide_size="40pt", pun="Do Not<br>Crumble", size="33pt",
-      accent="#F2A93B", accent_text="#F7C46B",
+      accent="#F2A93B", accent_text="#F7C46B", s_accent="#B0740A", s_text="#8A5A06",
       process="Enzymatic fermentation",
       notes="Vanilla · Cherries · Disco",
       lot="Vanilla Crumble",
@@ -78,6 +107,15 @@ VARIANTS = [
 
 KICKER = "Attic&nbsp;Roast&nbsp;×&nbsp;Dark&nbsp;Prague&nbsp;2026"
 KICKER_SHORT = "Attic&nbsp;Roast&nbsp;×&nbsp;Dark&nbsp;Prague"
+
+BAND_COLOURS = ["#F7B32B","#F2643C","#E8508D","#7C5CFF","#2FB3C9"]
+# Geometry is inline and display comes from CSS. The band kept losing to layout rules
+# that targeted descendants (.wide > *, body.pg > *) and to flex shrinking; pinning the
+# position/size inline leaves exactly one thing for a theme to decide: whether it shows.
+def bands_html(h="6mm"):
+    return ('<div class="bands" style="position:absolute;left:0;right:0;bottom:0;'
+            f'height:{h};z-index:9">'
+            + "".join(f'<i style="background:{c}"></i>' for c in BAND_COLOURS) + "</div>")
 
 STORY = ("Private by default is not a setting, it is a place to stand: "
          "communities that run on their own ground instead of someone else's. "
@@ -122,15 +160,9 @@ WIDE_INNER = '''<div class="wide" style="--accent:{accent};--accent-text:{accent
       <span class="tiny">Espresso&nbsp;&amp;&nbsp;filter</span>
     </div>
   </div>
+  {bands}
 </div>'''
 
-def wide_inner(v):
-    return WIDE_INNER.format(emblem=emblem(v["accent"], 9), size=v["wide_size"], pun=v["pun"],
-                             accent=v["accent"], accent_text=v["accent_text"],
-                             process=v["process"], notes=v["notes"], lot=v["lot"], origin=v["origin"])
-
-def wide_label_html(v):
-    return head(f"Attic Roast — {v['slug']}", 157.16, 130) + '<body class="pg">\n' + wide_inner(v) + "\n</body></html>"
 
 LABEL_INNER = '''<div class="label" style="--accent:{accent};--accent-text:{accent_text}">
   <div class="row">
@@ -151,18 +183,10 @@ LABEL_INNER = '''<div class="label" style="--accent:{accent};--accent-text:{acce
       <span class="tiny">Fifty&nbsp;Beans&nbsp;·&nbsp;Brno</span>
     </div>
   </div>
+  {bands}
 </div>'''
 
-def label_inner(v):
-    return LABEL_INNER.format(emblem=emblem(v["accent"], 10), size=v["size"], pun=v["pun"],
-                              accent=v["accent"], accent_text=v["accent_text"],
-                              process=v["process"], notes=v["notes"], lot=v["lot"],
-                              origin=v["origin"])
-
-def label_html(v):
-    return head(f"Attic Roast — {v['slug']}", 70, 100) + '<body class="pg">\n' + label_inner(v) + "\n</body></html>"
-
-BACK_INNER = '''<div class="label">
+BACK_INNER = '''<div class="back">
   <div>
     <div class="row" style="margin-bottom:5mm">
       <span class="tiny tiny--bone">''' + KICKER_SHORT + '''</span>
@@ -191,10 +215,8 @@ BACK_INNER = '''<div class="label">
       <div style="color:var(--ember);width:16mm">{emblem_sm}</div>
     </div>
   </div>
+  {bands_sm}
 </div>'''
-
-def back_inner():
-    return BACK_INNER.replace("{emblem_sm}", emblem("#E2542B", 12))
 
 STICKER = '''<body class="pg">
 <div class="sticker" style="--accent:#E2542B">
@@ -203,6 +225,7 @@ STICKER = '''<body class="pg">
   <div style="width:22mm;height:.3mm;background:var(--accent);margin:1.8mm 0"></div>
   <div class="mono" style="font-size:5pt;letter-spacing:.14em;color:var(--sage);text-transform:uppercase">Dark Prague 2026<br>Coffee</div>
 </div>
+{bands_sm}
 </body></html>
 '''
 
@@ -257,7 +280,6 @@ SLEEVE = '''<body class="pg">
 </body></html>
 '''
 
-
 WIDE_BACK_INNER = '''<div class="wide">
   <div class="row">
     <span class="tiny tiny--bone">''' + KICKER + '''</span>
@@ -292,16 +314,54 @@ WIDE_BACK_INNER = '''<div class="wide">
   </div>
 </div>'''
 
-def wide_back_inner():
-    return WIDE_BACK_INNER.replace("{emblem_lg}", emblem("#E2542B", 8))
+def pick(v, theme):
+    """Accents for a theme. The sunrise accents are darker so the tiny text still
+    passes contrast on a cream ground instead of on ink."""
+    return (v["s_accent"], v["s_text"]) if theme == "sunrise" else (v["accent"], v["accent_text"])
 
-def sheet_html(contents=None, note=""):
+def mark_for(v, theme, stroke, cls="emblem"):
+    """Sunrise draws the cup in ink with the lot's colour in the bars, so the colour
+    lives inside the mark instead of flooding the whole glyph."""
+    if theme == "sunrise":
+        return emblem("#1A140C", stroke, cls, bar=v["s_accent"])
+    return emblem(v["accent"], stroke, cls)
+
+def wide_inner(v, theme="dark"):
+    a, at = pick(v, theme)
+    return WIDE_INNER.format(emblem=mark_for(v, theme, 9), size=v["wide_size"], pun=v["pun"], bands=bands_html(),
+                             accent=a, accent_text=at,
+                             process=v["process"], notes=v["notes"], lot=v["lot"], origin=v["origin"])
+
+def wide_label_html(v, theme="dark"):
+    return (head(f"Attic Roast — {v['slug']}", 157.16, 130, bg=THEMES[theme]["bg"], theme=theme)
+            + '<body class="pg">\n' + wide_inner(v, theme) + "\n</body></html>")
+
+def label_inner(v, theme="dark"):
+    a, at = pick(v, theme)
+    return LABEL_INNER.format(emblem=mark_for(v, theme, 10), size=v["size"], pun=v["pun"], bands=bands_html("4mm"),
+                              accent=a, accent_text=at,
+                              process=v["process"], notes=v["notes"], lot=v["lot"],
+                              origin=v["origin"])
+
+def label_html(v, theme="dark"):
+    return (head(f"Attic Roast — {v['slug']}", 70, 100, bg=THEMES[theme]["bg"], theme=theme)
+            + '<body class="pg">\n' + label_inner(v, theme) + "\n</body></html>")
+
+def back_inner(theme="dark"):
+    m = emblem("#1A140C", 12, bar="#D9411C") if theme == "sunrise" else emblem("#E2542B", 12)
+    return BACK_INNER.replace("{emblem_sm}", m).replace("{bands_sm}", bands_html())
+
+def wide_back_inner(theme="dark"):
+    m = emblem("#1A140C", 8, bar="#D9411C") if theme == "sunrise" else emblem("#E2542B", 8)
+    return WIDE_BACK_INNER.replace("{emblem_lg}", m).replace("{bands_sm}", bands_html())
+
+def sheet_html(contents=None, note="", theme="dark"):
     """A4 sheet holding two 157.16 x 130 mm labels, stacked, with crop marks."""
     W,H=157.16,130
     xs=(26.42, 26.42)        # centred: (210-157.16)/2
-    ys=(16.0, 150.0)          # clear of the header line and the crop marks
+    ys=(16.0, 150.0)         # clear of the header line and the crop marks
     if contents is None:
-        contents=[wide_inner(v) for v in VARIANTS[:2]]
+        contents=[wide_inner(v, theme) for v in VARIANTS[:2]]
     def mark(x,y,hf,ht,vf,vt):
         return (f'<i class="cr" style="left:{min(hf,ht)}mm;top:{y}mm;width:{abs(ht-hf)}mm;height:0.25mm"></i>'
                 f'<i class="cr" style="left:{x}mm;top:{min(vf,vt)}mm;width:0.25mm;height:{abs(vt-vf)}mm"></i>')
@@ -322,19 +382,23 @@ def sheet_html(contents=None, note=""):
             f'<div class="sheet__note">{note}</div>'
             '</div></body></html>')
 
-def main():
+def main(theme="dark"):
+    OUT = os.path.join(ROOT, THEMES[theme]["out"])
     os.makedirs(OUT, exist_ok=True)
+    bg = THEMES[theme]["bg"]
     n=0
     for v in VARIANTS:
-        open(os.path.join(OUT,f"{v['slug']}.html"),"w").write(wide_label_html(v)); n+=1
-        open(os.path.join(OUT,f"{v['slug']}-small.html"),"w").write(label_html(v)); n+=1
-    open(os.path.join(OUT,"back.html"),"w").write(head("back",157.16,130)+'<body class="pg">\n'+back_inner()+"\n</body></html>"); n+=1
-    open(os.path.join(OUT,"sticker.html"),"w").write(head("sticker",50,50)+STICKER.format(emblem=emblem("#E2542B", 11, "emblem emblem--sm"))); n+=1
-    open(os.path.join(OUT,"table-card.html"),"w").write(head("card",148,210)+CARD.format(emblem=emblem("#E2542B", 10, "emblem emblem--card"))); n+=1
-    open(os.path.join(OUT,"cup-sleeve.html"),"w").write(head("sleeve",230,55)+SLEEVE.format(emblem=emblem("#E2542B", 11, "emblem emblem--sleeve"))); n+=1
-    open(os.path.join(OUT,"sheet-a4-1.html"),"w").write(head("sheet1",210,297,bg="#F4F3EC")+sheet_html([wide_inner(VARIANTS[0]),wide_inner(VARIANTS[1])],"Disco Parallel &middot; Private Fizz")); n+=1
-    open(os.path.join(OUT,"sheet-a4-2.html"),"w").write(head("sheet2",210,297,bg="#F4F3EC")+sheet_html([wide_inner(VARIANTS[2]),wide_back_inner()],"Do Not Crumble &middot; back")); n+=1
-    print(f"wrote {n} templates to {OUT}")
+        open(os.path.join(OUT,f"{v['slug']}.html"),"w").write(wide_label_html(v, theme)); n+=1
+        open(os.path.join(OUT,f"{v['slug']}-small.html"),"w").write(label_html(v, theme)); n+=1
+    open(os.path.join(OUT,"back.html"),"w").write(head("back",157.16,130,bg=bg,theme=theme)+'<body class="pg">\n'+back_inner(theme)+"\n</body></html>"); n+=1
+    open(os.path.join(OUT,"sticker.html"),"w").write(head("sticker",50,50,bg=bg,theme=theme)+STICKER.format(bands_sm=bands_html("4mm"), emblem=mark_for(VARIANTS[0], theme, 11, "emblem emblem--sm"))); n+=1
+    open(os.path.join(OUT,"table-card.html"),"w").write(head("card",148,210,bg=bg,theme=theme)+CARD.format(emblem=mark_for(VARIANTS[0], theme, 10, "emblem emblem--card"))); n+=1
+    open(os.path.join(OUT,"cup-sleeve.html"),"w").write(head("sleeve",230,55,bg=bg,theme=theme)+SLEEVE.format(emblem=mark_for(VARIANTS[0], theme, 11, "emblem emblem--sleeve"))); n+=1
+    open(os.path.join(OUT,"sheet-a4-1.html"),"w").write(head("sheet1",210,297,bg=THEMES[theme]["sheet_bg"],theme=theme)+sheet_html([wide_inner(VARIANTS[0],theme),wide_inner(VARIANTS[1],theme)],"Disco Parallel &middot; Private Fizz",theme)); n+=1
+    open(os.path.join(OUT,"sheet-a4-2.html"),"w").write(head("sheet2",210,297,bg=THEMES[theme]["sheet_bg"],theme=theme)+sheet_html([wide_inner(VARIANTS[2],theme),wide_back_inner(theme)],"Do Not Crumble &middot; back",theme)); n+=1
+    print(f"  {theme}: wrote {n} templates to {os.path.basename(OUT)}")
 
 if __name__ == "__main__":
-    main()
+    which = sys.argv[1:] or list(THEMES)
+    for t in which:
+        main(t)
