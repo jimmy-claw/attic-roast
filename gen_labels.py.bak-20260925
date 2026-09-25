@@ -59,7 +59,7 @@ def emblem(color="#E2542B", stroke=10, cls="emblem", bar=None):
 </svg>'''
 
 def head(title, wmm, hmm, bg="#0C0C0D", extra="", theme="dark"):
-    # Chromium rounds @page sizes to whole POINTS (156.56mm -> whole pt), so we render on a
+    # Chromium rounds @page sizes to whole POINTS (157.16mm -> 156.97mm), so we render on a
     # page 1.5mm larger, anchor the piece to the BOTTOM-LEFT, and let ghostscript crop the
     # extra (gs -dFIXEDMEDIA keeps the bottom-left of the larger page). Result: exact trim,
     # no white hairline at the edge.
@@ -133,7 +133,7 @@ STORY = ("Private by default is not a setting, it is a place to stand: "
          "coffee session at Dark Prague — exotic varieties, advanced fermentation, "
          "roasted in Brno by <span style=\"color:var(--bone)\">Fifty Beans</span>.")
 
-# ── the wide 156.56 x 129.40 mm label (Fifty Beans' print size, revised 25/09) ─────
+# ── the wide 157.16 x 130 mm label (the size Fifty Beans actually prints) ─────
 WIDE_INNER = '''<div class="wide" style="--accent:{accent};--accent-text:{accent_text}">
   <div class="row">
     <span class="tiny tiny--bone">''' + KICKER + '''</span>
@@ -161,7 +161,7 @@ WIDE_INNER = '''<div class="wide" style="--accent:{accent};--accent-text:{accent
     <div class="row" style="align-items:flex-end">
       <div class="mono" style="font-size:8pt;color:var(--accent-text);line-height:1.45;text-transform:uppercase;letter-spacing:.08em">Build&nbsp;the&nbsp;parallel,<br>one&nbsp;cup&nbsp;at&nbsp;a&nbsp;time.</div>
       <div class="mono" style="font-size:6pt;color:var(--sage);line-height:1.6;text-transform:uppercase;letter-spacing:.06em;text-align:right">
-        200&nbsp;g&nbsp;·&nbsp;Whole&nbsp;bean<br>Roasted&nbsp;by&nbsp;Fifty&nbsp;Beans&nbsp;·&nbsp;Brno
+        250&nbsp;g&nbsp;·&nbsp;Whole&nbsp;bean<br>Roasted&nbsp;by&nbsp;Fifty&nbsp;Beans&nbsp;·&nbsp;Brno
       </div>
     </div>
     <div class="rule"></div>
@@ -189,7 +189,7 @@ LABEL_INNER = '''<div class="label" style="--accent:{accent};--accent-text:{acce
     <div class="mono" style="font-size:6.6pt;color:var(--accent-text);line-height:1.5;text-transform:uppercase;letter-spacing:.08em">Build&nbsp;the&nbsp;parallel,<br>one&nbsp;cup&nbsp;at&nbsp;a&nbsp;time.</div>
     <div class="rule"></div>
     <div class="row">
-      <span class="tiny">200&nbsp;g&nbsp;·&nbsp;Whole&nbsp;bean</span>
+      <span class="tiny">250&nbsp;g&nbsp;·&nbsp;Whole&nbsp;bean</span>
       <span class="tiny">Fifty&nbsp;Beans&nbsp;·&nbsp;Brno</span>
     </div>
   </div>
@@ -324,7 +324,7 @@ WIDE_BACK_INNER = '''<div class="wide">
     </div>
     <div class="rule"></div>
     <div class="row">
-      <span class="tiny">Roasted&nbsp;by&nbsp;Fifty&nbsp;Beans&nbsp;·&nbsp;Brno&nbsp;·&nbsp;200&nbsp;g&nbsp;whole&nbsp;bean</span>
+      <span class="tiny">Roasted&nbsp;by&nbsp;Fifty&nbsp;Beans&nbsp;·&nbsp;Brno&nbsp;·&nbsp;250&nbsp;g&nbsp;whole&nbsp;bean</span>
       <span class="tiny">Old&nbsp;Wastewater&nbsp;Treatment&nbsp;Plant&nbsp;·&nbsp;Prague</span>
     </div>
   </div>
@@ -349,7 +349,7 @@ def wide_inner(v, theme="dark"):
                              process=v["process"], notes=v["notes"], lot=v["lot"], origin=v["origin"])
 
 def wide_label_html(v, theme="dark"):
-    return (head(f"Attic Roast — {v['slug']}", 156.56, 129.4, bg=THEMES[theme]["bg"], theme=theme)
+    return (head(f"Attic Roast — {v['slug']}", 157.16, 130, bg=THEMES[theme]["bg"], theme=theme)
             + '<body class="pg">\n' + wide_inner(v, theme) + "\n</body></html>")
 
 def label_inner(v, theme="dark"):
@@ -372,9 +372,9 @@ def wide_back_inner(theme="dark"):
     return WIDE_BACK_INNER.replace("{emblem_lg}", m).replace("{bands_sm}", bands_html() if theme == "sunrise" else "")
 
 def sheet_html(contents=None, note="", theme="dark"):
-    """A4 sheet holding two 156.56 x 129.40 mm labels, stacked, with crop marks."""
-    W,H=156.56,129.4
-    xs=(26.72, 26.72)        # centred: (210-156.56)/2
+    """A4 sheet holding two 157.16 x 130 mm labels, stacked, with crop marks."""
+    W,H=157.16,130
+    xs=(26.42, 26.42)        # centred: (210-157.16)/2
     ys=(16.0, 150.0)         # clear of the header line and the crop marks
     if contents is None:
         contents=[wide_inner(v, theme) for v in VARIANTS[:2]]
@@ -393,7 +393,7 @@ def sheet_html(contents=None, note="", theme="dark"):
                   for (x,y),c in zip(zip(xs,ys), contents))
     return ('<body class="pg"><div class="sheet">'
             '<div class="sheet__head"><span>Attic Roast &mdash; label sheet</span>'
-            '<span>two &times; 156.56 &times; 129.40 mm &middot; print at 100% &middot; no scaling</span></div>'
+            '<span>two &times; 157.16 &times; 130 mm &middot; print at 100% &middot; no scaling</span></div>'
             + bleeds + "".join(marks) + cells +
             f'<div class="sheet__note">{note}</div>'
             '</div></body></html>')

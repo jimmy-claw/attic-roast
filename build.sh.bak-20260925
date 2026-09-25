@@ -21,10 +21,10 @@ cd "$DIR"
 # name:template:width_mm:height_mm   (the sizes declared on the site)
 # No back label: Fifty Beans' own back label covers the back of the bag.
 PIECES=(
-  "disco-parallel:disco-parallel.html:156.56:129.4"
-  "private-fizz:private-fizz.html:156.56:129.4"
-  "proof-of-pop:proof-of-pop.html:156.56:129.4"
-  "do-not-crumble:do-not-crumble.html:156.56:129.4"
+  "disco-parallel:disco-parallel.html:157.16:130"
+  "private-fizz:private-fizz.html:157.16:130"
+  "proof-of-pop:proof-of-pop.html:157.16:130"
+  "do-not-crumble:do-not-crumble.html:157.16:130"
   "sticker:sticker.html:50:50"
   "table-card:table-card.html:148:210"
   "cup-sleeve:cup-sleeve.html:230:55"
