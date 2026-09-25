@@ -61,11 +61,7 @@ html,body{background:var(--ink);-webkit-font-smoothing:antialiased}
 
 
 /* ---------- 157.16 x 130 mm bag label (matches Fifty Beans' label size) ---------- */
-/* overflow:hidden is REQUIRED, not cosmetic. .wide::before is inset -5mm on every side as a
-   vignette, so it extends 5mm BELOW a 130mm box. body{overflow:hidden} does not clip in
-   paginated print, so Chromium spilled the bleed onto a SECOND, EMPTY PAGE — every label PDF
-   was 2 pages until 2026-09-25. Clipping here keeps the vignette and the single page. */
-.wide{overflow:hidden;width:156.56mm;height:129.4mm;background:var(--ink);color:var(--bone);
+.wide{width:157.16mm;height:130mm;background:var(--ink);color:var(--bone);
   padding:9mm;position:relative;display:flex;flex-direction:column;
   --accent:var(--ember);--accent-text:#F4794E}
 .wide__main{display:flex;gap:11mm;align-items:stretch;margin-top:4mm}

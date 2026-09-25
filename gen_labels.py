@@ -161,7 +161,7 @@ WIDE_INNER = '''<div class="wide" style="--accent:{accent};--accent-text:{accent
     <div class="row" style="align-items:flex-end">
       <div class="mono" style="font-size:8pt;color:var(--accent-text);line-height:1.45;text-transform:uppercase;letter-spacing:.08em">Build&nbsp;the&nbsp;parallel,<br>one&nbsp;cup&nbsp;at&nbsp;a&nbsp;time.</div>
       <div class="mono" style="font-size:6pt;color:var(--sage);line-height:1.6;text-transform:uppercase;letter-spacing:.06em;text-align:right">
-        250&nbsp;g&nbsp;·&nbsp;Whole&nbsp;bean<br>Roasted&nbsp;by&nbsp;Fifty&nbsp;Beans&nbsp;·&nbsp;Brno
+        200&nbsp;g&nbsp;·&nbsp;Whole&nbsp;bean<br>Roasted&nbsp;by&nbsp;Fifty&nbsp;Beans&nbsp;·&nbsp;Brno
       </div>
     </div>
     <div class="rule"></div>
@@ -189,7 +189,7 @@ LABEL_INNER = '''<div class="label" style="--accent:{accent};--accent-text:{acce
     <div class="mono" style="font-size:6.6pt;color:var(--accent-text);line-height:1.5;text-transform:uppercase;letter-spacing:.08em">Build&nbsp;the&nbsp;parallel,<br>one&nbsp;cup&nbsp;at&nbsp;a&nbsp;time.</div>
     <div class="rule"></div>
     <div class="row">
-      <span class="tiny">250&nbsp;g&nbsp;·&nbsp;Whole&nbsp;bean</span>
+      <span class="tiny">200&nbsp;g&nbsp;·&nbsp;Whole&nbsp;bean</span>
       <span class="tiny">Fifty&nbsp;Beans&nbsp;·&nbsp;Brno</span>
     </div>
   </div>
@@ -324,7 +324,7 @@ WIDE_BACK_INNER = '''<div class="wide">
     </div>
     <div class="rule"></div>
     <div class="row">
-      <span class="tiny">Roasted&nbsp;by&nbsp;Fifty&nbsp;Beans&nbsp;·&nbsp;Brno&nbsp;·&nbsp;250&nbsp;g&nbsp;whole&nbsp;bean</span>
+      <span class="tiny">Roasted&nbsp;by&nbsp;Fifty&nbsp;Beans&nbsp;·&nbsp;Brno&nbsp;·&nbsp;200&nbsp;g&nbsp;whole&nbsp;bean</span>
       <span class="tiny">Old&nbsp;Wastewater&nbsp;Treatment&nbsp;Plant&nbsp;·&nbsp;Prague</span>
     </div>
   </div>
@@ -349,7 +349,7 @@ def wide_inner(v, theme="dark"):
                              process=v["process"], notes=v["notes"], lot=v["lot"], origin=v["origin"])
 
 def wide_label_html(v, theme="dark"):
-    return (head(f"Attic Roast — {v['slug']}", 157.16, 130, bg=THEMES[theme]["bg"], theme=theme)
+    return (head(f"Attic Roast — {v['slug']}", 156.56, 129.4, bg=THEMES[theme]["bg"], theme=theme)
             + '<body class="pg">\n' + wide_inner(v, theme) + "\n</body></html>")
 
 def label_inner(v, theme="dark"):
