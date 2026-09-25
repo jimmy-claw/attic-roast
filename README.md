@@ -44,9 +44,9 @@ Everything in `site/` is generated. Edit `gen_labels.py` (artwork) or `site/inde
 
 | piece | size |
 |---|---|
-| bag label (four lots) | 157.16 × 130 mm — matches Fifty Beans' own label |
+| bag label (four lots) | **156.56 × 129.40 mm** — revised 25/09, 0.3 mm off each side |
 | small bag label | 70 × 100 mm |
-| back label | 157.16 × 130 mm |
+| back label | dropped — front only |
 | round sticker | 50 mm Ø |
 | table card | A5, 148 × 210 mm |
 | cup sleeve | 230 × 55 mm |

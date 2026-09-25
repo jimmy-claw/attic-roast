@@ -59,7 +59,7 @@ def emblem(color="#E2542B", stroke=10, cls="emblem", bar=None):
 </svg>'''
 
 def head(title, wmm, hmm, bg="#0C0C0D", extra="", theme="dark"):
-    # Chromium rounds @page sizes to whole POINTS (157.16mm -> 156.97mm), so we render on a
+    # Chromium rounds @page sizes to whole POINTS (156.56mm -> whole pt), so we render on a
     # page 1.5mm larger, anchor the piece to the BOTTOM-LEFT, and let ghostscript crop the
     # extra (gs -dFIXEDMEDIA keeps the bottom-left of the larger page). Result: exact trim,
     # no white hairline at the edge.
@@ -133,7 +133,7 @@ STORY = ("Private by default is not a setting, it is a place to stand: "
          "coffee session at Dark Prague — exotic varieties, advanced fermentation, "
          "roasted in Brno by <span style=\"color:var(--bone)\">Fifty Beans</span>.")
 
-# ── the wide 157.16 x 130 mm label (the size Fifty Beans actually prints) ─────
+# ── the wide 156.56 x 129.40 mm label (Fifty Beans' print size, revised 25/09) ─────
 WIDE_INNER = '''<div class="wide" style="--accent:{accent};--accent-text:{accent_text}">
   <div class="row">
     <span class="tiny tiny--bone">''' + KICKER + '''</span>
